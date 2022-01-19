@@ -38,7 +38,8 @@ do
       cut -f 1 "$n".signalp/output.gff3 | grep -v '##' > "$n".secreted.seq
 
       #Custom python script that only extract the longest precursor with a signal peptide in the ORFs
-      grep -F -A1 -f  "$n".secreted.seq $n | grep -v '--' "^--$" > "$n".secreted.fa
+      grep -F -f "$n".secreted.seq $n | grep -v '--' "^--$"  | awk -F "]" '!_[$1]++' > s"$n".ecreted_nonred.seq
+      grep -F -A1 -f  "$n".secreted_nonred.seq $n | grep -v '--' "^--$" > "$n".secreted.fa
 
       #Add sequences to master secretome
       cat "$n".secreted.fa >> ../secreted.fa
@@ -61,7 +62,8 @@ do
     cut -f 1 signalp/output.gff3 | grep -v '##' > secreted.seq
 
     #Custom python script that only extract the longest precursor with a signal peptide in the ORFs
-    grep -F -A1 -f  secreted.seq orfs.starts.fa | grep -v '--' "^--$" > secreted.fa
+    grep -F -f secreted.seq orfs.starts.fa | grep -v '--' "^--$"  | awk -F "]" '!_[$1]++' > secreted_nonred.seq
+    grep -F -A1 -f  secreted_nonred.seq orfs.starts.fa | grep -v '--' "^--$" > secreted.fa
 
     #Add sequences to master secretome
     cat secreted.fa >> ../transcriptome_secretome.fa
